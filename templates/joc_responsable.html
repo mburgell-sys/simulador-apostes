@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block titol %}Joc Responsable — Simulador d'apostes{% endblock %}
+
+{% block contingut %}
+  <h1>Joc Responsable</h1>
+
+  <div class="text-informatiu">
+    <p>
+      Apostar hauria de ser sempre una activitat d'entreteniment amb límits clars,
+      mai una manera d'aconseguir diners ni una via d'escapament. Aquest simulador
+      reprodueix les eines de control que ofereixen les cases d'apostes reals
+      perquè puguis veure com funcionen, sense arriscar cap diner real.
+    </p>
+    <div class="nota-avis">
+      Alguns senyals d'alerta: apostar més del que tenies previst, perseguir les
+      pèrdues apostant encara més per recuperar-les, amagar als altres quant
+      apostes, o sentir ansietat quan no pots fer-ho.
+    </div>
+  </div>
+
+  <div class="panell">
+    <h2>Límit diari d'apostes</h2>
+    <p style="color:var(--text-muted); font-size:0.9rem;">
+      Estableix un import màxim de betcoin que et permetràs apostar cada dia.
+      {% if usuari.limit_aposta_diari %}
+        Ara mateix el teu límit és de <strong>{{ usuari.limit_aposta_diari }} BC</strong> al dia.
+      {% else %}
+        Ara mateix no tens cap límit configurat.
+      {% endif %}
+    </p>
+    <form method="POST" class="fila-formulari">
+      <input type="hidden" name="accio" value="definir_limit">
+      <label for="limit_aposta_diari">Nou límit (BC)</label>
+      <input type="number" id="limit_aposta_diari" name="limit_aposta_diari" min="1" placeholder="p. ex. 200">
+      <button type="submit" class="boto">Desar límit</button>
+    </form>
+    {% if usuari.limit_aposta_diari %}
+      <form method="POST" style="margin-top:10px;">
+        <input type="hidden" name="accio" value="treure_limit">
+        <button type="submit" class="boto secundari">Eliminar límit</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <div class="panell">
+    <h2>Autoexclusió</h2>
+    {% if usuari.autoexclos %}
+      <p style="color:var(--text-muted); font-size:0.9rem;">
+        Tens l'autoexclusió <strong>activada</strong>: no pots fer cap aposta fins que la desactivis.
+      </p>
+      <form method="POST">
+        <input type="hidden" name="accio" value="cancelar_autoexclusio">
+        <button type="submit" class="boto secundari">Desactivar autoexclusió</button>
+      </form>
+    {% else %}
+      <p style="color:var(--text-muted); font-size:0.9rem;">
+        Si vols, pots bloquejar-te temporalment perquè el compte no et deixi apostar.
+      </p>
+      <form method="POST">
+        <input type="hidden" name="accio" value="autoexcloure">
+        <button type="submit" class="boto perill">Activar autoexclusió</button>
+      </form>
+    {% endif %}
+  </div>
+
+  <div class="recursos-ajuda">
+    <h3>On demanar ajuda de veritat</h3>
+    <p style="color:var(--text-muted); font-size:0.88rem; margin:6px 0 0 0;">
+      Si tu o algú que coneixes té problemes amb el joc, aquests recursos ofereixen
+      informació i suport confidencial:
+    </p>
+    <ul>
+      <li>Federació Catalana de Jugadors en Rehabilitació (FCJR)</li>
+      <li>Línia d'ajuda sobre el joc del Departament de Salut de la Generalitat</li>
+      <li>El teu centre de salut o l'orientador/a del centre educatiu</li>
+    </ul>
+  </div>
+{% endblock %}

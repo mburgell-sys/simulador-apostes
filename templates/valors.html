@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block titol %}Valors — Simulador d'apostes{% endblock %}
+
+{% block contingut %}
+  <h1>Valors</h1>
+  <p style="color:var(--text-muted); max-width:60ch;">
+    Els principis que guien aquest projecte, pensats per a un entorn
+    educatiu i d'anàlisi, no per maximitzar l'ús de l'aplicació:
+  </p>
+
+  <div class="llista-valors">
+    <div class="item-valor">
+      <h3>Transparència</h3>
+      <p>Les quotes, els saldos i l'historial es mostren sempre complets, sense lletra petita ni condicions amagades.</p>
+    </div>
+    <div class="item-valor">
+      <h3>Cap diner real</h3>
+      <p>El "betcoin" no es pot comprar ni bescanviar. Tota l'experiència es queda dins l'entorn de la simulació.</p>
+    </div>
+    <div class="item-valor">
+      <h3>Consciència</h3>
+      <p>La secció de Joc Responsable no és decorativa: inclou límits reals i informació de contacte per demanar ajuda.</p>
+    </div>
+    <div class="item-valor">
+      <h3>Ús educatiu</h3>
+      <p>Aquesta aplicació es va crear per a un treball de recerca i no té finalitat comercial ni s'ha de fer servir fora d'aquest context.</p>
+    </div>
+  </div>
+{% endblock %}

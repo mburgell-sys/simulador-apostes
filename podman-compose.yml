@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Containerfile
+    container_name: simulador-apostes
+    ports:
+      - "5000:5000"
+    volumes:
+      # Aixi les dades (usuaris, apostes...) sobreviuen encara que
+      # esborris i tornis a crear el contenidor.
+      - ./data:/app/data:Z
+    environment:
+      - SECRET_KEY=clau-secreta-treball-recerca-2026
+    restart: unless-stopped

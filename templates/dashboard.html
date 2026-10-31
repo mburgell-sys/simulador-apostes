@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block titol %}Tauler de Control — Simulador d'apostes{% endblock %}
+
+{% block contingut %}
+  <h1>Tauler de Control</h1>
+
+  <div class="graella-resum">
+    <div class="targeta-resum">
+      <div class="valor">{{ usuari.saldo_betcoin }} BC</div>
+      <div class="etiqueta">Saldo disponible</div>
+    </div>
+    <div class="targeta-resum">
+      <div class="valor">{{ total_apostat_avui }} BC</div>
+      <div class="etiqueta">Apostat avui</div>
+    </div>
+    <div class="targeta-resum">
+      <div class="valor">{{ usuari.limit_aposta_diari if usuari.limit_aposta_diari else "—" }}</div>
+      <div class="etiqueta">Límit diari configurat</div>
+    </div>
+  </div>
+
+  <div class="panell">
+    <h2>Apostes recents</h2>
+    {% if apostes_recents %}
+      <table>
+        <thead>
+          <tr>
+            <th>Esdeveniment</th>
+            <th>Selecció</th>
+            <th>Import</th>
+            <th>Guany potencial</th>
+            <th>Estat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in apostes_recents %}
+            <tr>
+              <td>{{ a.participant_1 }} – {{ a.participant_2 }}</td>
+              <td>{{ a.seleccio }} (quota {{ a.quota }})</td>
+              <td>{{ a.import_apostat }} BC</td>
+              <td>{{ a.guany_potencial }} BC</td>
+              <td><span class="estat {{ a.estat }}">{{ a.estat }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Encara no has fet cap aposta. Tria un esport al menú de l'esquerra per començar.</p>
+    {% endif %}
+  </div>
+{% endblock %}

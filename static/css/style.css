@@ -1,0 +1,471 @@
+/* =========================================================
+   Simulador d'apostes — fulla d'estils
+   Paleta deliberadament "freda" i poc cridanera: es un simulador
+   educatiu, no volem imitar l'estetica llampant (neons, or, vermell)
+   que fan servir moltes cases d'apostes reals per enganxar l'usuari.
+   ========================================================= */
+
+:root {
+  --bg-base: #10151c;
+  --bg-panel: #1a222c;
+  --bg-panel-raised: #212b37;
+  --border: #2a3441;
+
+  --accent: #3fa796;       /* betcoin, botons principals */
+  --accent-dim: #2c7a6e;
+  --odds: #c97b3d;         /* quotes */
+  --danger: #c1554b;
+
+  --text-primary: #edeff2;
+  --text-muted: #8a93a3;
+
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.4em 0;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.4rem; }
+
+/* ---------- Capçalera superior ---------- */
+
+.capcalera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.marca {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.marca .punt {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.nav-principal {
+  display: flex;
+  gap: 4px;
+}
+
+.nav-principal a {
+  padding: 8px 14px;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-principal a:hover,
+.nav-principal a.actiu {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+.saldo-usuari {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.9rem;
+}
+
+.saldo-usuari .quantitat {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.enllac-sortir {
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  font-size: 0.82rem;
+}
+.enllac-sortir:hover { color: var(--text-primary); border-color: var(--text-muted); }
+
+/* ---------- Estructura general ---------- */
+
+.contenidor-app {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: calc(100vh - 60px);
+}
+
+.barra-lateral {
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+}
+
+.barra-lateral .etiqueta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 20px;
+  margin-bottom: 10px;
+}
+
+.llista-esports a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  border-left: 3px solid transparent;
+}
+
+.llista-esports a:hover {
+  color: var(--text-primary);
+  background: var(--bg-panel-raised);
+}
+
+.llista-esports a.actiu {
+  color: var(--text-primary);
+  border-left-color: var(--accent);
+  background: var(--bg-panel-raised);
+}
+
+.icona-esport { font-size: 1.1rem; }
+
+.contingut {
+  padding: 28px 32px;
+  max-width: 980px;
+}
+
+/* ---------- Missatges flash ---------- */
+
+.flash {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+}
+
+/* ---------- Targetes / panells ---------- */
+
+.panell {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.graella-resum {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.targeta-resum {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  padding: 16px 18px;
+}
+
+.targeta-resum .valor {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.targeta-resum .etiqueta {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+/* ---------- Partits i quotes ---------- */
+
+.partit {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.partit .info-competicio {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.partit .enfrontament {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.partit .data-hora {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+.quotes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.botó-quota {
+  background: var(--bg-panel-raised);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  min-width: 74px;
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.botó-quota .etiqueta-quota {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.botó-quota .valor-quota {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--odds);
+}
+
+.botó-quota:hover,
+.botó-quota.seleccionada {
+  border-color: var(--accent);
+}
+
+/* ---------- Formulari d'aposta (ticket) ---------- */
+
+.ticket-aposta {
+  border: 1px dashed var(--border);
+  padding: 16px;
+  margin-top: 10px;
+  display: none;
+}
+
+.ticket-aposta.visible { display: block; }
+
+.fila-formulari {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 9px 11px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+}
+
+input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+label { font-size: 0.85rem; color: var(--text-muted); }
+
+.boto {
+  background: var(--accent);
+  color: #0b1410;
+  border: none;
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.boto:hover { background: var(--accent-dim); }
+
+.boto.secundari {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.boto.perill {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- Taula historial ---------- */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.estat {
+  padding: 2px 8px;
+  font-size: 0.76rem;
+  border: 1px solid var(--border);
+}
+.estat.pendent { color: var(--text-muted); }
+.estat.guanyada { color: var(--accent); border-color: var(--accent); }
+.estat.perduda { color: var(--danger); border-color: var(--danger); }
+
+/* ---------- Pàgines de login / registre ---------- */
+
+.pantalla-centrada {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-base);
+}
+
+.caixa-login {
+  width: 340px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  padding: 32px;
+}
+
+.caixa-login .marca {
+  margin-bottom: 6px;
+}
+
+.caixa-login .subtitol {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 22px;
+}
+
+.camp { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+.camp input { width: 100%; }
+
+.caixa-login .boto { width: 100%; margin-top: 6px; }
+
+.link-secundari {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.link-secundari a { color: var(--accent); }
+
+/* ---------- Contingut informatiu (missió / valors / joc responsable) ---------- */
+
+.text-informatiu p { color: var(--text-primary); max-width: 70ch; }
+.text-informatiu .nota-avis {
+  border-left: 3px solid var(--odds);
+  background: var(--bg-panel-raised);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 18px 0;
+}
+
+.llista-valors {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.llista-valors .item-valor {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 14px 16px;
+}
+
+.llista-valors .item-valor h3 { margin-bottom: 6px; font-size: 1.05rem; }
+.llista-valors .item-valor p { margin: 0; color: var(--text-muted); font-size: 0.88rem; }
+
+.recursos-ajuda {
+  border: 1px solid var(--border);
+  padding: 16px 18px;
+  margin-top: 18px;
+}
+.recursos-ajuda h3 { color: var(--accent); }
+.recursos-ajuda ul { margin: 8px 0 0 0; padding-left: 18px; color: var(--text-muted); font-size: 0.9rem; }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .contenidor-app { grid-template-columns: 1fr; }
+  .barra-lateral {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    padding: 10px 0;
+    overflow-x: auto;
+  }
+  .barra-lateral .etiqueta { display: none; }
+  .llista-esports { display: flex; }
+  .llista-esports a { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .llista-esports a.actiu { border-bottom-color: var(--accent); border-left-color: transparent; }
+  .nav-principal { display: none; }
+  .graella-resum { grid-template-columns: 1fr; }
+  .llista-valors { grid-template-columns: 1fr; }
+}

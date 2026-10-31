@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titol %}Simulador d'apostes{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="capcalera">
+    <div class="marca"><span class="punt"></span> Simulador d'apostes</div>
+
+    <nav class="nav-principal">
+      <a href="{{ url_for('dashboard') }}" class="{{ 'actiu' if request.endpoint == 'dashboard' }}">Tauler de Control</a>
+      <a href="{{ url_for('historial') }}" class="{{ 'actiu' if request.endpoint == 'historial' }}">Historial</a>
+      <a href="{{ url_for('joc_responsable') }}" class="{{ 'actiu' if request.endpoint == 'joc_responsable' }}">Joc Responsable</a>
+      <a href="{{ url_for('missio') }}" class="{{ 'actiu' if request.endpoint == 'missio' }}">Missió</a>
+      <a href="{{ url_for('valors') }}" class="{{ 'actiu' if request.endpoint == 'valors' }}">Valors</a>
+    </nav>
+
+    <div class="saldo-usuari">
+      {% if usuari %}
+        <span>{{ usuari.nom_usuari }}</span>
+        <span class="quantitat">{{ usuari.saldo_betcoin }} BC</span>
+        <a class="enllac-sortir" href="{{ url_for('logout') }}">Sortir</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="contenidor-app">
+    <aside class="barra-lateral">
+      <div class="etiqueta">Esports</div>
+      <nav class="llista-esports">
+        <a href="{{ url_for('esport', nom_esport='futbol') }}" class="{{ 'actiu' if request.path == url_for('esport', nom_esport='futbol') }}">
+          <span class="icona-esport">⚽</span> Futbol
+        </a>
+        <a href="{{ url_for('esport', nom_esport='tenis') }}" class="{{ 'actiu' if request.path == url_for('esport', nom_esport='tenis') }}">
+          <span class="icona-esport">🎾</span> Tenis
+        </a>
+      </nav>
+    </aside>
+
+    <main class="contingut">
+      {% with missatges = get_flashed_messages() %}
+        {% if missatges %}
+          {% for missatge in missatges %}
+            <div class="flash">{{ missatge }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block contingut %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

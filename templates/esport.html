@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titol %}{{ nom_esport|capitalize }} — Simulador d'apostes{% endblock %}
+
+{% block contingut %}
+  <h1>{{ nom_esport|capitalize }}</h1>
+
+  {% if esdeveniments %}
+    {% for e in esdeveniments %}
+      <div class="partit">
+        <div>
+          <div class="info-competicio">{{ e.competicio }}</div>
+          <div class="enfrontament">{{ e.participant_1 }} <span style="color:var(--text-muted)">vs</span> {{ e.participant_2 }}</div>
+          <div class="data-hora">{{ e.data_hora[:16].replace("T", " · ") }}</div>
+
+          <form class="ticket-aposta" id="ticket-{{ e.id }}" method="POST" action="{{ url_for('apostar', esdeveniment_id=e.id) }}">
+            <input type="hidden" name="seleccio">
+            <div class="fila-formulari">
+              <span>Selecció: <strong class="quota-elegida">–</strong></span>
+              <label for="import-{{ e.id }}">Import (BC)</label>
+              <input type="number" id="import-{{ e.id }}" name="import_apostat" min="1" max="{{ usuari.saldo_betcoin }}" required>
+              <span>Guany potencial: <strong class="guany-potencial">0</strong> BC</span>
+              <button type="submit" class="boto">Confirmar aposta</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="quotes">
+          <button type="button" class="botó-quota" data-partit-id="{{ e.id }}" data-seleccio="1" data-quota="{{ e.quota_1 }}">
+            <span class="etiqueta-quota">1</span>
+            <span class="valor-quota">{{ e.quota_1 }}</span>
+          </button>
+          {% if e.quota_empat %}
+            <button type="button" class="botó-quota" data-partit-id="{{ e.id }}" data-seleccio="X" data-quota="{{ e.quota_empat }}">
+              <span class="etiqueta-quota">X</span>
+              <span class="valor-quota">{{ e.quota_empat }}</span>
+            </button>
+          {% endif %}
+          <button type="button" class="botó-quota" data-partit-id="{{ e.id }}" data-seleccio="2" data-quota="{{ e.quota_2 }}">
+            <span class="etiqueta-quota">2</span>
+            <span class="valor-quota">{{ e.quota_2 }}</span>
+          </button>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Ara mateix no hi ha partits disponibles per a aquest esport.</p>
+  {% endif %}
+{% endblock %}

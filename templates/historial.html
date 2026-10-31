@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block titol %}Historial — Simulador d'apostes{% endblock %}
+
+{% block contingut %}
+  <h1>Historial d'apostes</h1>
+
+  <div class="panell">
+    {% if apostes %}
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Esport</th>
+            <th>Esdeveniment</th>
+            <th>Selecció</th>
+            <th>Quota</th>
+            <th>Import</th>
+            <th>Guany potencial</th>
+            <th>Estat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in apostes %}
+            <tr>
+              <td>{{ a.data_hora[:16].replace("T", " ") }}</td>
+              <td>{{ a.esport|capitalize }}</td>
+              <td>{{ a.participant_1 }} – {{ a.participant_2 }}</td>
+              <td>{{ a.seleccio }}</td>
+              <td>{{ a.quota }}</td>
+              <td>{{ a.import_apostat }} BC</td>
+              <td>{{ a.guany_potencial }} BC</td>
+              <td><span class="estat {{ a.estat }}">{{ a.estat }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Encara no has fet cap aposta.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registre — Simulador d'apostes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="pantalla-centrada">
+    <div class="caixa-login">
+      <div class="marca"><span class="punt"></span> Simulador d'apostes</div>
+      <div class="subtitol">Crea un compte i rep {{ 1000 }} betcoin de regal per començar.</div>
+
+      {% with missatges = get_flashed_messages() %}
+        {% if missatges %}
+          {% for missatge in missatges %}
+            <div class="flash">{{ missatge }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST">
+        <div class="camp">
+          <label for="nom_usuari">Nom d'usuari</label>
+          <input type="text" id="nom_usuari" name="nom_usuari" required autofocus minlength="3">
+        </div>
+        <div class="camp">
+          <label for="password">Contrasenya</label>
+          <input type="password" id="password" name="password" required minlength="4">
+        </div>
+        <button type="submit" class="boto">Crear compte</button>
+      </form>
+
+      <span class="link-secundari">Ja tens compte? <a href="{{ url_for('login') }}">Inicia sessió</a></span>
+    </div>
+  </div>
+</body>
+</html>

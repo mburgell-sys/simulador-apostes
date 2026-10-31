@@ -1,0 +1,36 @@
+# Blueprint de Render per al Simulador d'apostes.
+#
+# Com fer-lo servir:
+#   1. Puja aquest projecte a un repositori de GitHub/GitLab.
+#   2. A Render, tria "New" -> "Blueprint" i selecciona el repositori.
+#      Render llegirà aquest fitxer automàticament.
+#
+# També pots crear el servei manualment ("New" -> "Web Service",
+# Runtime: Docker) sense fer servir aquest fitxer; en aquest cas,
+# configura tu mateix les variables d'entorn de la secció "envVars".
+
+services:
+  - type: web
+    name: simulador-apostes
+    runtime: docker
+    dockerfilePath: ./Containerfile
+    plan: free
+    healthCheckPath: /login
+    envVars:
+      # Render genera un valor aleatori segur automàticament; no cal
+      # que hi posis res.
+      - key: SECRET_KEY
+        generateValue: true
+
+    # IMPORTANT sobre les dades (llegeix el README abans de desplegar):
+    # El pla "free" de Render NO té disc persistent: cada vegada que el
+    # servei es reinicia o es torna a desplegar, el fitxer simulador.db
+    # es perd i es torna a crear buit. Per a la defensa del treball
+    # això sol ser acceptable (fas login, fas un parell d'apostes de
+    # demostració). Si vols que les dades es mantinguin sempre, cal
+    # passar a un pla de pagament ("Starter" o superior) i afegir:
+    #
+    # disk:
+    #   name: dades-simulador
+    #   mountPath: /app/data
+    #   sizeGB: 1
