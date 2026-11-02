@@ -26,17 +26,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 # Clau secreta per xifrar la sessio de l'usuari (cookies de login).
-# A Render (o qualsevol servidor real) s'ha de definir la variable
-# d'entorn SECRET_KEY amb un valor aleatori propi; el valor de mostra
-# nomes es fa servir com a fallback quan es treballa en local.
-SECRET_KEY_PER_DEFECTE = "clau-secreta-treball-recerca-2026"
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", SECRET_KEY_PER_DEFECTE)
-if app.config["SECRET_KEY"] == SECRET_KEY_PER_DEFECTE and os.environ.get("RENDER"):
-    # Render defineix automaticament la variable d'entorn RENDER=true.
-    # Si detectem que estem a Render pero no s'ha configurat SECRET_KEY,
-    # ho avisem clarament als logs en lloc de fallar en silenci.
-    print("AVIS: no s'ha definit la variable d'entorn SECRET_KEY a Render. "
-          "Es fa servir un valor de mostra, nomes recomanat per a proves.")
+# En producció real aixo NO s'hauria de deixar fix al codi, pero per a
+# un treball de recerca / simulador local es suficient.
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "clau-secreta-treball-recerca-2026")
 
 # On es guarda el fitxer de la base de dades SQLite.
 # Fem servir una carpeta "data" perque despres, amb Podman, hi puguem
@@ -120,10 +112,16 @@ def init_db():
     if hi_ha_partits == 0:
         ara = datetime.now()
         partits_futbol = [
-            ("futbol", "Lliga Nacional", "FC Ribera", "Atlètic Serra", ara + timedelta(days=1, hours=2), 2.10, 3.40, 3.20),
-            ("futbol", "Lliga Nacional", "Unió Vallès", "Elx Units", ara + timedelta(days=2, hours=5), 1.85, 3.60, 4.10),
-            ("futbol", "Copa Regional", "Costa Blava", "FC Nord", ara + timedelta(days=3, hours=1), 2.75, 3.10, 2.55),
-            ("futbol", "Lliga Nacional", "Puig Esportiu", "Riera FC", ara + timedelta(days=4, hours=3), 1.60, 3.90, 5.20),
+            ("futbol", "LaLiga", "Sevilla FC", "Deportivo Alavés", ara + timedelta(days=1, hours=2), 1.93, 3.35, 4.00),
+            ("futbol", "LaLiga", "Màlaga CF", "Racing de Santander", ara + timedelta(days=2, hours=5), 2.38, 3.60, 2.70),
+            ("futbol", "LaLiga", "RCD Espanyol", "Deportivo de la Coruña", ara + timedelta(days=4, hours=3), 2.15, 3.40, 3.25),
+            ("futbol", "LaLiga", "CA Osasuna", "Athletic Club", ara + timedelta(days=1, hours=2), 3.25, 3.40, 2.15),
+            ("futbol", "LaLiga", "València CF", "Real Madrid", ara + timedelta(days=1, hours=2), 9.00, 5.75, 1.28),
+            ("futbol", "LaLiga", "Elche CF", "Real Betis", ara + timedelta(days=1, hours=2), 3.15, 3.70, 2.10),
+            ("futbol", "LaLiga", "Celta de Vigo", "Levante CF", ara + timedelta(days=1, hours=2), 1.78, 3.75, 4.20),
+            ("futbol", "LaLiga", "Villareal CF", "Getafe CF", ara + timedelta(days=1, hours=2), 1.45, 4.33, 7.00),
+            ("futbol", "LaLiga", "Real Sociedad", "Rayo Vallecano", ara + timedelta(days=1, hours=2), 1.70, 3.95, 4.50),
+            ("futbol", "LaLiga", "Atlético de Madrid", "FC Barcelona", ara + timedelta(days=1, hours=2), 3.65, 4.20, 1.80),
         ]
         for esport, comp, p1, p2, data, q1, qx, q2 in partits_futbol:
             db.execute(
@@ -133,9 +131,9 @@ def init_db():
             )
 
         partits_tenis = [
-            ("tenis", "Obert de Primavera", "M. Torras", "J. Vidal", ara + timedelta(days=1, hours=6), 1.45, None, 2.70),
-            ("tenis", "Obert de Primavera", "L. Camps", "A. Roig", ara + timedelta(days=1, hours=9), 2.05, None, 1.75),
-            ("tenis", "Circuit Continental", "S. Puig", "D. Ferrer Jr.", ara + timedelta(days=2, hours=4), 1.30, None, 3.30),
+            ("tenis", "ATP Paris", "Casper Ruud (NOR)", "Juan Manuel Cerundolo (ARG)", ara + timedelta(days=1, hours=6), 1.48, None, 2.60),
+            ("tenis", "ATP Paris", "Stefanos Tsitsipas (GRE)", "Learner Tien (USA)", ara + timedelta(days=1, hours=9), 2.05, None, 1.67),
+            ("tenis", "ATP Paris", "Novak Djokovic (SRB)", "Valentin Vacherot (FRA)", ara + timedelta(days=2, hours=4), 1.42, None, 2.70),
         ]
         for esport, comp, p1, p2, data, q1, qx, q2 in partits_tenis:
             db.execute(
@@ -464,13 +462,6 @@ def valors():
 init_db()
 
 if __name__ == "__main__":
-    # Aquest bloc nomes s'executa quan fas "python app.py" en local.
-    # A Render (i en produccio en general) NO es fa servir aquest servidor
-    # de desenvolupament: s'arrenca amb Gunicorn des del Containerfile,
-    # que importa la variable "app" directament sense passar per aqui.
-    #
     # host="0.0.0.0" es necessari perque el servidor sigui accessible
     # des de fora del contenidor Podman.
-    port = int(os.environ.get("PORT", 5000))
-    mode_debug = os.environ.get("FLASK_DEBUG", "1") == "1"
-    app.run(host="0.0.0.0", port=port, debug=mode_debug)
+    app.run(host="0.0.0.0", port=5000, debug=True)
