@@ -141,6 +141,23 @@ def init_db():
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 (esport, comp, p1, p2, data.isoformat(), q1, qx, q2),
             )
+
+        partits_padel = [
+            ("padel", "Dubai P1", "Bergamini/Bautista", "Sanz/Stupaczuk", ara + timedelta(days=1, hours=6), 3.20, None, 1.50),
+            ("padel", "Dubai P1", "Di nenno/Navarro", "Leal/Guerrero", ara + timedelta(days=1, hours=9), 1.85, None, 2.30),
+            ("padel", "Dubai P1", "Coello/Tapia", "Campagnolo/Gonzalez", ara + timedelta(days=2, hours=4), 1.20, None, 4.00),
+            ("padel", "Dubai P1", "Galán/Chingotto", "Alfonso/Libaak", ara + timedelta(days=2, hours=4), 1.35, None, 3.00),
+            ("padel", "Dubai P1", "Augsburger/Lebron", "Nieto/Yanguas", ara + timedelta(days=2, hours=4), 1.50, None, 2.75),
+            ("padel", "Dubai P1", "Tello/Arce", "Alonso/Goñi", ara + timedelta(days=2, hours=4), 2.10, None, 1.95),
+            ("padel", "Dubai P1", "Garrido/De Pascual", "Esbri/Jofre", ara + timedelta(days=2, hours=4), 1.50, None, 2.70),
+            ("padel", "Dubai P1", "Ruiz/Garcia", "Arroyo/Jiménez", ara + timedelta(days=2, hours=4), 1.80, None, 2.05),
+                    ]
+        for esport, comp, p1, p2, data, q1, qx, q2 in partits_padel:
+            db.execute(
+                "INSERT INTO esdeveniments (esport, competicio, participant_1, participant_2, data_hora, quota_1, quota_empat, quota_2) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (esport, comp, p1, p2, data.isoformat(), q1, qx, q2),
+            )
         db.commit()
 
     db.close()
@@ -286,7 +303,7 @@ def dashboard():
 @app.route("/esport/<nom_esport>")
 @cal_login
 def esport(nom_esport):
-    if nom_esport not in ("futbol", "tenis"):
+    if nom_esport not in ("futbol", "tenis", "padel"):
         return redirect(url_for("dashboard"))
 
     esdeveniments = get_db().execute(
