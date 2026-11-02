@@ -40,6 +40,9 @@
         <a href="{{ url_for('esport', nom_esport='tenis') }}" class="{{ 'actiu' if request.path == url_for('esport', nom_esport='tenis') }}">
           <span class="icona-esport">🎾</span> Tenis
         </a>
+        <a href="{{ url_for('esport', nom_esport='padel') }}" class="{{ 'actiu' if request.path == url_for('esport', nom_esport='padel') }}">
+          <span class="icona-esport">🥎</span> Pàdel
+        </a>
       </nav>
     </aside>
 
